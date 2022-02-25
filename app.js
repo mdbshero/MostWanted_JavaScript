@@ -7,10 +7,10 @@
 //#region 
 
 // app is the function called to start the entire application
-function app(people){
+function app(people) {
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults = {}
-  switch(searchType){
+  switch (searchType) {
     case 'yes':
       searchResults = searchByName(people);
       break;
@@ -21,42 +21,63 @@ function app(people){
       app(people); // restart app
       break;
   }
-  
+
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
   mainMenu(searchResults, people);
 }
 
 // Menu function to call once you find who you are looking for
-function mainMenu(person, people){
+function mainMenu(person, people) {
 
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
 
-  if(!person){
+  if (!person) {
     alert("Could not find that individual.");
     return app(people); // restart
   }
 
   let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
 
-  switch(displayOption){
+  switch (displayOption) {
     case "info":
-    // TODO: get person's info
-    break;
+      // TODO: get person's info
+      // let printThis = function (person, returnThis=""){
+      //   for (const key in person[0]){
+      //     returnThis += `${key} : ${person[0][key]}\n`
+      //   }
+      //   return returnThis      
+      // }
+      // alert(printThis(person))
+      break;
     case "family":
-    // TODO: get person's family
-    break;
+      // TODO: get person's family
+      //Parents spouse siblings - No descendants
+      console.log(familyFinder(person, people))
+      break;
     case "descendants":
-    // TODO: get person's descendants
-    break;
+      // TODO: get person's descendants
+      //Single layer of Kids
+      break;
     case "restart":
-    app(people); // restart
-    break;
+      app(people); // restart
+      break;
     case "quit":
-    return; // stop execution
+      return; // stop execution
     default:
-    return mainMenu(person, people); // ask again
+      return mainMenu(person, people); // ask again
   }
 }
+
+
+
+function familyFinder(person, people){
+  let parents = JSON.stringify(people.filter(family=>person[0].parents.includes((family.id))),['firstName','lastName'],1).replace(/({|}|\[|\]|"|)/g, '')
+  let spouse = (JSON.stringify(((people.filter(family=>person[0].currentSpouse == family.id)) != ''? people.filter(family=>person[0].currentSpouse == family.id):"N/A"),['firstName','lastName'],1)).replace(/({|}|\[|\]|"|,)/g, '')
+  // let spouse = people.filter(family=>person[0].currentSpouse == family.id)
+  let stringReturn = `Family of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nParent(s): ${parents}\nSpouse:${spouse}`
+  return(stringReturn)
+}
+
 
 //#endregion
 
@@ -66,7 +87,7 @@ function mainMenu(person, people){
 //#region 
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
-function searchByName(people){
+function searchByName(people) {
   let firstName = promptFor("What is the person's first name?", autoValid);
   let lastName = promptFor("What is the person's last name?", autoValid);
 
@@ -74,11 +95,11 @@ function searchByName(people){
 
 
   // TODO: find the person single person object using the name they entered.
-  return(foundPerson);
+  return (foundPerson);
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByEyeColor(people){
+function searchByEyeColor(people) {
 
 }
 
@@ -94,13 +115,13 @@ function searchByEyeColor(people){
 //#region 
 
 // alerts a list of people
-function displayPeople(people){
-  alert(people.map(function(person){
+function displayPeople(people) {
+  alert(people.map(function (person) {
     return person.firstName + " " + person.lastName;
   }).join("\n"));
 }
 
-function displayPerson(person){
+function displayPerson(person) {
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person.firstName + "\n";
@@ -122,35 +143,35 @@ function displayPerson(person){
 //response: Will capture the user input.
 //isValid: Will capture the return of the validation function callback. true(the user input is valid)/false(the user input was not valid).
 //this function will continue to loop until the user enters something that is not an empty string("") or is considered valid based off the callback function(valid).
-function promptFor(question, valid){
+function promptFor(question, valid) {
   let isValid;
-  do{
+  do {
     var response = prompt(question).trim();
     isValid = valid(response);
-  } while(response === ""  ||  isValid === false)
+  } while (response === "" || isValid === false)
   return response;
 }
 
 // helper function/callback to pass into promptFor to validate yes/no answers.
-function yesNo(input){
-  if(input.toLowerCase() == "yes" || input.toLowerCase() == "no"){
+function yesNo(input) {
+  if (input.toLowerCase() == "yes" || input.toLowerCase() == "no") {
     return true;
   }
-  else{
+  else {
     return false;
   }
 }
 
 // helper function to pass in as default promptFor validation.
 //this will always return true for all inputs.
-function autoValid(input){
+function autoValid(input) {
   return true; // default validation only
 }
 
 //Unfinished validation function you can use for any of your custom validation callbacks.
 //can be used for things like eye color validation for example.
-function customValidation(input){
-  
+function customValidation(input) {
+
 }
 
 //#endregion
