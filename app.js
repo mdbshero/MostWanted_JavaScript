@@ -40,6 +40,7 @@ function mainMenu(person, people) {
 
   switch (displayOption) {
     case "info":
+
       // TODO: get person's info
       // let printThis = function (person, returnThis=""){
       //   for (const key in person[0]){
@@ -48,7 +49,9 @@ function mainMenu(person, people) {
       //   return returnThis      
       // }
       // alert(printThis(person))
-      break;
+
+      return alert(JSON.stringify(person, null, 1))
+    break;
     case "family":
       // TODO: get person's family
       //Parents spouse siblings - No descendants
