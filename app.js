@@ -40,7 +40,7 @@ function mainMenu(person, people){
 
   switch(displayOption){
     case "info":
-    // TODO: get person's info
+      return alert(JSON.stringify(person, null, 1))
     break;
     case "family":
     // TODO: get person's family
