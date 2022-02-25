@@ -9,7 +9,7 @@
 // app is the function called to start the entire application
 function app(people){
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
-  let searchResults;
+  let searchResults = {}
   switch(searchType){
     case 'yes':
       searchResults = searchByName(people);
@@ -17,8 +17,8 @@ function app(people){
     case 'no':
       // TODO: search by traits
       break;
-      default:
-    app(people); // restart app
+    default:
+      app(people); // restart app
       break;
   }
   
@@ -36,7 +36,7 @@ function mainMenu(person, people){
     return app(people); // restart
   }
 
-  let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+  let displayOption = promptFor("Found " + person[0].firstName + " " + person[0].lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
 
   switch(displayOption){
     case "info":
@@ -70,16 +70,11 @@ function searchByName(people){
   let firstName = promptFor("What is the person's first name?", autoValid);
   let lastName = promptFor("What is the person's last name?", autoValid);
 
-  let foundPerson = people.filter(function(potentialMatch){
-    if(potentialMatch.firstName === firstName && potentialMatch.lastName === lastName){
-      return true;
-    }
-    else{
-      return false;
-    }
-  })
+  let foundPerson = people.filter(potentialMatch => potentialMatch.firstName === firstName && potentialMatch.lastName === lastName)
+
+
   // TODO: find the person single person object using the name they entered.
-  return foundPerson;
+  return(foundPerson);
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
