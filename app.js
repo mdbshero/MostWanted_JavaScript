@@ -130,49 +130,53 @@ function searchByTrait(people){
   // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
   // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
   traitsToSearch = traitsToSearch.split(/ AND | , |, | ,|,/g)
+  let peopleWithTraits = people;
 
-<<<<<<< HEAD
-  if (traitsToSearch.filter(person=> /gender/g.test(person)).length != 0){
-    console.log(traitsToSearch.filter(person=> (/gender/g).test(person)))
-    people = searchByGender(people, traitsToSearch.filter(person=> (/gender/g).test(person)))
-=======
   if (traitsToSearch.filter(person=> /gender/gi.test(person)).length != 0){
-    console.log(traitsToSearch.filter(person=> (/gender/gi).test(person)))
->>>>>>> 11d182b3ba6dfd6df5939d8aff6421f7f13e5c98
+    peopleWithTraits = searchByGender(peopleWithTraits,traitsToSearch.filter(person=> /gender/gi.test(person)))
     // people = searchByGender(people, traitsToSearch)
   } 
-  if (traitsToSearch.filter(person=> (/occupation/gi).test(person)).length != 0){
-    console.log(traitsToSearch.filter(person=> (/occupation/gi).test(person)))
+  if (traitsToSearch.filter(person=> /occupation/gi.test(person)).length != 0){
+    peopleWithTraits = searchByOccupation(peopleWithTraits,traitsToSearch.filter(person=> /occupation/gi.test(person)))
     
     // people = searchByGender(people, traitsToSearch)
   }
   if (traitsToSearch.filter(person=> /eyecolor/gi.test(person)).length != 0){
-    console.log("TESTING EYECOLOUR")
+    peopleWithTraits = searchByEyeColor(peopleWithTraits,traitsToSearch.filter(person=> /eyecolor/gi.test(person)))
     // people = searchByEyeColor(people, traitsToSearch)
   }
   if (traitsToSearch.filter(person=> /weight/gi.test(person)).length != 0){
-    console.log("TESTING weight")
+    peopleWithTraits = searchByWeight(peopleWithTraits,traitsToSearch.filter(person=> /weight/gi.test(person)))
     // people = searchByEyeColor(people, traitsToSearch)
   }
   if (traitsToSearch.filter(person=> /height/gi.test(person)).length != 0){
-    console.log(traitsToSearch.filter(person=> /height/gi.test(person)))
-    people = searchByHeight(people, traitsToSearch.filter(person=> /height/gi.test(person)))
-    console.log(people)
+    peopleWithTraits = searchByHeight(peopleWithTraits, traitsToSearch.filter(person=> /height/gi.test(person)))
   }
+
+  displayPeople(peopleWithTraits)
+  app(people)
 }
+
+
+
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-<<<<<<< HEAD
 function searchByGender(people, traitsToSearch) {
+  console.log(traitsToSearch)
   let searchedGender = traitsToSearch[0].split(":");
-  console.log(people.filter(person => person.gender == searchedGender[1]))
-=======
-function searchByGender(people) {
-
->>>>>>> 11d182b3ba6dfd6df5939d8aff6421f7f13e5c98
+  return(people.filter(person => person.gender == searchedGender[1]))
 }
-
-
-
+function searchByOccupation(people,traitsToSearch){
+  let newTraitsToSearch = traitsToSearch[0].split(":")
+  return(people.filter(person=>person.occupation == newTraitsToSearch[1]))
+}
+function searchByEyeColor(people,traitsToSearch){
+  let newTraitsToSearch = traitsToSearch[0].split(":")
+  return(people.filter(person=>person.eyeColor==newTraitsToSearch[1]))
+}
+function searchByWeight(people,traitsToSearch){
+  let newTraitsToSearch = traitsToSearch[0].split(":")
+  return(people.filter(person=>person.weight==newTraitsToSearch[1]))
+}
 function searchByHeight(people,traitsToSearch){
   let newTraitsToSearch = traitsToSearch[0].split(":")
   return(people.filter(person=>person.height==newTraitsToSearch[1]))
