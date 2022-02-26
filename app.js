@@ -55,11 +55,12 @@ function mainMenu(person, people) {
     case "family":
       // TODO: get person's family
       //Parents spouse siblings - No descendants
-      console.log(familyFinder(person, people))
+      console.log(familyFinder(person, people));
       break;
     case "descendants":
       // TODO: get person's descendants
       //Single layer of Kids
+      console.log(descendantFinder(person, people));
       break;
     case "restart":
       app(people); // restart
@@ -79,6 +80,15 @@ function familyFinder(person, people){
   let siblings = (JSON.stringify(((people.filter(family=>(family.parents.includes(person[0].parents[0]) | family.parents.includes(person[0].parents[1])) && family != person[0])) != ''?people.filter(family=>(family.parents.includes(person[0].parents[0]) | family.parents.includes(person[0].parents[1])) && family != person[0]) :"N/A"),['firstName','lastName'],1)).replace(/({|}|\[|\]|"|,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
   // let spouse = people.filter(family=>person[0].currentSpouse == family.id)
   let stringReturn = `Family of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nParent(s): ${parents}\nSpouse:${spouse}\nSiblings:${siblings}`
+  return(stringReturn)
+}
+
+function descendantFinder(person, people){
+  let descendants = (JSON.stringify(people.filter(offspring => offspring.parents.includes(person[0].id)) != ''? people.filter(offspring => offspring.parents.includes(person[0].id)):"N/A"),['firstName','lastName'],1)
+
+  //!= ''? people.filter(offspring.parents.includes((person[0].id)):"N/A"),['firstName','lastName'],1).replace(/({|}|\[|\]|"|\n,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
+  //let spouse = (JSON.stringify(((people.filter(family=>person[0].currentSpouse == family.id)) != ''? people.filter(family=>person[0].currentSpouse == family.id):"N/A"),['firstName','lastName'],1)).replace(/({|}|\[|\]|"|,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
+  let stringReturn = `Descendants of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nDecendant(s): ${descendants}`
   return(stringReturn)
 }
 
