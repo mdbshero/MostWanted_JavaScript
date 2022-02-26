@@ -127,6 +127,12 @@ function searchByTrait(people){
   // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
   // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
   traitsToSearch = traitsToSearch.split(/ AND |AND | AND|AND| , |, | ,|,/g)
+  if (traitsToSearch.includes("gender")){
+    people = searchByGender(people, traitsToSearch)
+  }
+  if (traitsToSearch.includes("eyeColor")){
+    people = searchByEyeColor(people, traitsToSearch)
+  }
   console.log(traitsToSearch)
 
 }
