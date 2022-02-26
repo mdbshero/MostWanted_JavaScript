@@ -16,6 +16,7 @@ function app(people) {
       break;
     case 'no':
       // TODO: search by traits
+      searchResults = searchByTrait(people);
       break;
     default:
       app(people); // restart app
@@ -55,7 +56,7 @@ function mainMenu(person, people) {
     case "family":
       // TODO: get person's family
       //Parents spouse siblings - No descendants
-      console.log(familyFinder(person, people))
+      console.log(familyFinder(person, people));
       break;
     case "descendants":
       // TODO: get person's descendants
@@ -75,8 +76,8 @@ function mainMenu(person, people) {
 
 
 function familyFinder(person, people){
-  let parents = JSON.stringify(people.filter(family=>person[0].parents.includes((family.id))),['firstName','lastName'],1).replace(/({|}|\[|\]|"|\n,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
-  let spouse = (JSON.stringify(((people.filter(family=>person[0].currentSpouse == family.id)) != ''? people.filter(family=>person[0].currentSpouse == family.id):"N/A"),['firstName','lastName'],1)).replace(/({|}|\[|\]|"|,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
+  let parents = JSON.stringify(people.filter(family=>person[0].parents.includes((family.id))),['firstName','lastName'],1).replace(/({|}|\[|\]|"|\n,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(,\n |\n |\n)/g, '')
+  let spouse = (JSON.stringify(people.filter(family=>person[0].currentSpouse == family.id) != ''? people.filter(family=>person[0].currentSpouse == family.id):"N/A"),['firstName','lastName'],1).replace(/({|}|\[|\]|"|,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n |\n |\n)/g, '')
   let siblings = (JSON.stringify(((people.filter(family=>(family.parents.includes(person[0].parents[0]) | family.parents.includes(person[0].parents[1])) && family != person[0])) != ''?people.filter(family=>(family.parents.includes(person[0].parents[0]) | family.parents.includes(person[0].parents[1])) && family != person[0]) :"N/A"),['firstName','lastName'],1)).replace(/({|}|\[|\]|"|,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
   // let spouse = people.filter(family=>person[0].currentSpouse == family.id)
   let stringReturn = `Family of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nParent(s): ${parents}\nSpouse:${spouse}\nSiblings:${siblings}`
@@ -102,23 +103,32 @@ function descendantFinder(person, people){
 
 //nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people) {
-  let firstName = promptFor("What is the person's first name?", autoValid);
-  let lastName = promptFor("What is the person's last name?", autoValid);
+  let firstName = promptFor("What is the person's first name?", autoValid).toLowerCase();
+  let lastName = promptFor("What is the person's last name?", autoValid).toLowerCase();
 
-  let foundPerson = people.filter(potentialMatch => potentialMatch.firstName === firstName && potentialMatch.lastName === lastName)
+  let foundPerson = people.filter(potentialMatch => potentialMatch.firstName.toLowerCase() === firstName && potentialMatch.lastName.toLowerCase() === lastName)
 
 
   // TODO: find the person single person object using the name they entered.
   return (foundPerson);
 }
 
+
+function searchByTrait(people){
+  let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eye color:blue AND occupation:nurse`,autoValid)
+  // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
+  // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
+  traitsToSearch = traitsToSearch.split(/ AND |AND | AND|AND| , |, | ,|,/g)
+  console.log(traitsToSearch)
+
+}
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 function searchByEyeColor(people) {
 
 }
 
 //TODO: add other trait filter functions here.
-
+//Traits to search by:EyeColor, Height, Weight, Occupation, Gender
 
 
 //#endregion
