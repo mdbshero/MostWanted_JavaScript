@@ -133,6 +133,7 @@ function searchByTrait(people){
 
   if (traitsToSearch.filter(person=> /gender/g.test(person)).length != 0){
     console.log(traitsToSearch.filter(person=> (/gender/g).test(person)))
+    people = searchByGender(people, traitsToSearch.filter(person=> (/gender/g).test(person)))
     // people = searchByGender(people, traitsToSearch)
   } 
   if (traitsToSearch.filter(person=> (/occupation/g).test(person)).length != 0){
@@ -156,8 +157,9 @@ function searchByTrait(people){
 
 }
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByEyeColor(people) {
-
+function searchByGender(people, traitsToSearch) {
+  let searchedGender = traitsToSearch[0].split(":");
+  console.log(people.filter(person => person.gender == searchedGender[1]))
 }
 
 //TODO: add other trait filter functions here.
