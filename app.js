@@ -51,17 +51,20 @@ function mainMenu(person, people) {
       // }
       // alert(printThis(person))
 
-      return alert(JSON.stringify(person, null, 1)).replace(/({|}|\[|\]|"|\n,)/g, '')
+      alert(JSON.stringify(person, null, 1).replace(/({|}|\[|\]|"|\n,)/g, ''))
+      mainMenu(person, people); // restart
     break;
     case "family":
       // TODO: get person's family
       //Parents spouse siblings - No descendants
-      console.log(familyFinder(person, people));
+      alert(familyFinder(person, people));
+      mainMenu(person, people); // restart
       break;
     case "descendants":
       // TODO: get person's descendants
       //Single layer of Kids
-      console.log(descendantFinder(person, people));
+      alert(descendantFinder(person, people));
+      mainMenu(person, people); // restart
       break;
     case "restart":
       app(people); // restart
@@ -126,12 +129,28 @@ function searchByTrait(people){
   let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eye color:blue AND occupation:nurse`,autoValid)
   // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
   // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
-  traitsToSearch = traitsToSearch.split(/ AND |AND | AND|AND| , |, | ,|,/g)
-  if (traitsToSearch.includes("gender")){
-    people = searchByGender(people, traitsToSearch)
+  traitsToSearch = traitsToSearch.split(/ AND | , |, | ,|,/g)
+
+  if (traitsToSearch.filter(person=> /gender/g.test(person)).length != 0){
+    console.log(traitsToSearch.filter(person=> (/gender/g).test(person)))
+    // people = searchByGender(people, traitsToSearch)
+  } 
+  if (traitsToSearch.filter(person=> (/occupation/g).test(person)).length != 0){
+    console.log(traitsToSearch.filter(person=> (/occupation/g).test(person)))
+    
+    // people = searchByGender(people, traitsToSearch)
   }
-  if (traitsToSearch.includes("eyeColor")){
-    people = searchByEyeColor(people, traitsToSearch)
+  if (traitsToSearch.filter(person=> /eyecolor/g.test(person)).length != 0){
+    console.log("TESTING EYECOLOUR")
+    // people = searchByEyeColor(people, traitsToSearch)
+  }
+  if (traitsToSearch.filter(person=> /weight/g.test(person)).length != 0){
+    console.log("TESTING weight")
+    // people = searchByEyeColor(people, traitsToSearch)
+  }
+  if (traitsToSearch.filter(person=> /height/g.test(person)).length != 0){
+    console.log("TESTING height")
+    // people = searchByEyeColor(people, traitsToSearch)
   }
   console.log(traitsToSearch)
 
