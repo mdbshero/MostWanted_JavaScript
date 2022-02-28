@@ -127,35 +127,46 @@ function searchByName(people) {
 
 
 function searchByTrait(people){
-  let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eye color:blue AND occupation:nurse`,autoValid)
+  let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eye color:blue AND occupation:nurse`,customValidation)
   // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
   // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
   traitsToSearch = traitsToSearch.split(/ AND | , |, | ,|,/g);
   let peopleWithTraits = people;
-
-  if (traitsToSearch.filter(person=> /gender/gi.test(person)).length != 0){
-    peopleWithTraits = searchByGender(peopleWithTraits,traitsToSearch.filter(person=> /gender/gi.test(person)));
+  let counter = 0;
+  if (traitsToSearch.filter(person=> /gender:/gi.test(person)).length != 0){
+    peopleWithTraits = searchByGender(peopleWithTraits,traitsToSearch.filter(person=> /gender:/gi.test(person)));
+    counter++;
     // people = searchByGender(people, traitsToSearch)
   } 
-  if (traitsToSearch.filter(person=> /occupation/gi.test(person)).length != 0){
-    peopleWithTraits = searchByOccupation(peopleWithTraits,traitsToSearch.filter(person=> /occupation/gi.test(person)));
+  if (traitsToSearch.filter(person=> /occupation:/gi.test(person)).length != 0){
+    peopleWithTraits = searchByOccupation(peopleWithTraits,traitsToSearch.filter(person=> /occupation:/gi.test(person)));
+    counter++;
     
     // people = searchByGender(people, traitsToSearch)
   }
-  if (traitsToSearch.filter(person=> /eyecolor/gi.test(person)).length != 0){
-    peopleWithTraits = searchByEyeColor(peopleWithTraits,traitsToSearch.filter(person=> /eyecolor/gi.test(person)));
+  if (traitsToSearch.filter(person=> /eyecolor:/gi.test(person)).length != 0){
+    peopleWithTraits = searchByEyeColor(peopleWithTraits,traitsToSearch.filter(person=> /eyecolor:/gi.test(person)));
+    counter++;
     // people = searchByEyeColor(people, traitsToSearch)
   }
-  if (traitsToSearch.filter(person=> /weight/gi.test(person)).length != 0){
-    peopleWithTraits = searchByWeight(peopleWithTraits,traitsToSearch.filter(person=> /weight/gi.test(person)));
+  if (traitsToSearch.filter(person=> /weight:/gi.test(person)).length != 0){
+    peopleWithTraits = searchByWeight(peopleWithTraits,traitsToSearch.filter(person=> /weight:/gi.test(person)));
+    counter++;
     // people = searchByEyeColor(people, traitsToSearch)
   }
-  if (traitsToSearch.filter(person=> /height/gi.test(person)).length != 0){
-    peopleWithTraits = searchByHeight(peopleWithTraits, traitsToSearch.filter(person=> /height/gi.test(person)));
+  if (traitsToSearch.filter(person=> /height:/gi.test(person)).length != 0){
+    peopleWithTraits = searchByHeight(peopleWithTraits, traitsToSearch.filter(person=> /height:/gi.test(person)));
+    counter++;
   }
 
+if (counter < traitsToSearch.length){
+  alert(`There was something wrong with your search\nPlease try again`)
+  return(app(people));
+}
+else{
   displayPeople(peopleWithTraits);
-  app(people);
+  return(app(people));
+}
 }
 
 
