@@ -94,15 +94,25 @@ function familyFinder(person, people){
   let stringReturn = `Family of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nParent(s): ${parents}\nSpouse: ${spouse}\nSiblings: ${siblings}`;
   return(stringReturn);
 }
-
-function descendantFinder(person, people){
-  let descendants = JSON.stringify(((people.filter(offspring => offspring.parents.includes(person[0].id))) != ''?people.filter(offspring => offspring.parents.includes(person[0].id)):"N/A"),['firstName','lastName'],1)
-  .replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',');
-
-  //!= ''? people.filter(offspring.parents.includes((person[0].id)):"N/A"),['firstName','lastName'],1).replace(/({|}|\[|\]|"|\n,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
-  //let spouse = (JSON.stringify(((people.filter(family=>person[0].currentSpouse == family.id)) != ''? people.filter(family=>person[0].currentSpouse == family.id):"N/A"),['firstName','lastName'],1)).replace(/({|}|\[|\]|"|,)/g, '').replace(/(firstName: |lastName: )/g,'').replace(/(\n,|,\n )/g, '')
-  let stringReturn = `Descendants of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nDecendant(s): ${descendants}`;
+let fullList = [];
+function descendantFinder(person, people, counter = 0){
+  let descendants = people.filter(offspring => offspring.parents.includes(person[0].id))
+  //.replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',')
+  if (counter < 2 ){
+  counter++
+  for (let i = 0; i < descendants.length; i++){
+    fullList.push(descendants[i])
+   descendantFinder([descendants[i]], people, counter)
+  }
+} 
+  let stringReturn = `Descendants of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nDecendant(s): ${descendantFormat(fullList)}`;
+  
   return(stringReturn);
+}
+
+function descendantFormat (list) {
+  list = JSON.stringify(fullList,['firstName','lastName'],1).replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',');
+  return list
 }
 
 
@@ -128,7 +138,7 @@ function searchByName(people) {
 
 
 function searchByTrait(people){
-  let traitsToSearch = promptFor(`Please enter up to 5 traits you would like to search for followed by a colon.\nThe following are the currently searchable terms: Gender, Occupation, eyecolor, weight, height\n\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eyecolor:blue AND occupation:nurse`,customValidation)
+  let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eye color:blue AND occupation:nurse`,customValidation)
   // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
   // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
   traitsToSearch = traitsToSearch.split(/ AND | , |, | ,|,/g);
@@ -173,7 +183,6 @@ function searchByTrait(people){
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 function searchByGender(people, traitsToSearch) {
-  console.log(traitsToSearch)
   let searchedGender = traitsToSearch[0].split(":");
   return(people.filter(person => person.gender == searchedGender[1]));
 }
