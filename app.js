@@ -64,6 +64,7 @@ function mainMenu(person, people) {
       // TODO: get person's descendants
       //Single layer of Kids
       alert(descendantFinder(person, people));
+      fullList = [];
       mainMenu(person, people); // restart
       break;
     case "restart":
