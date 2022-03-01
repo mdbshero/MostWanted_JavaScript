@@ -128,7 +128,7 @@ function searchByName(people) {
 
 
 function searchByTrait(people){
-  let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eye color:blue AND occupation:nurse`,customValidation)
+  let traitsToSearch = promptFor(`Please enter up to 5 traits you would like to search for followed by a colon.\nThe following are the currently searchable terms: Gender, Occupation, eyecolor, weight, height\n\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eyecolor:blue AND occupation:nurse`,customValidation)
   // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
   // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
   traitsToSearch = traitsToSearch.split(/ AND | , |, | ,|,/g);
