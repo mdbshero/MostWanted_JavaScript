@@ -96,15 +96,12 @@ function familyFinder(person, people){
   return(stringReturn);
 }
 let fullList = [];
-function descendantFinder(person, people, counter = 0){
+function descendantFinder(person, people){
   let descendants = people.filter(offspring => offspring.parents.includes(person[0].id))
   //.replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',')
-  if (counter < 2 ){
-  counter++
   for (let i = 0; i < descendants.length; i++){
     fullList.push(descendants[i])
-   descendantFinder([descendants[i]], people, counter)
-  }
+   descendantFinder([descendants[i]], people)
 } 
   let stringReturn = `Descendants of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nDecendant(s): ${descendantFormat(fullList)}`;
   
