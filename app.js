@@ -64,7 +64,6 @@ function mainMenu(person, people) {
       // TODO: get person's descendants
       //Single layer of Kids
       alert(descendantFinder(person, people));
-      fullList = [];
       mainMenu(person, people); // restart
       break;
     case "restart":
@@ -95,13 +94,12 @@ function familyFinder(person, people){
   let stringReturn = `Family of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nParent(s): ${parents}\nSpouse: ${spouse}\nSiblings: ${siblings}`;
   return(stringReturn);
 }
-let fullList = [];
-function descendantFinder(person, people){
+function descendantFinder(person, people,fullList=[]){
   let descendants = people.filter(offspring => offspring.parents.includes(person[0].id))
   //.replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',')
   for (let i = 0; i < descendants.length; i++){
     fullList.push(descendants[i])
-   descendantFinder([descendants[i]], people)
+   descendantFinder([descendants[i]], people,fullList)
 } 
   let stringReturn = `Descendants of ${person[0].firstName} ${person[0].lastName} ID: ${person[0].id}\nDecendant(s): ${descendantFormat(fullList)}`;
   
@@ -109,7 +107,7 @@ function descendantFinder(person, people){
 }
 
 function descendantFormat (list) {
-  list = JSON.stringify(fullList,['firstName','lastName'],1).replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',');
+  list = JSON.stringify(list,['firstName','lastName'],1).replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',');
   return list
 }
 
