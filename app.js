@@ -159,14 +159,13 @@ function searchByTrait(people){
     counter++;
   }
 
-if (counter < traitsToSearch.length){
-  alert(`There was something wrong with your search\nPlease try again`)
-  return(app(people));
-}
-else{
-  displayPeople(peopleWithTraits);
-  return(app(people));
-}
+  if (counter < traitsToSearch.length) {
+    alert(`There was something wrong with your search\nPlease try again`);
+    return app(people);
+  } else {
+    displayPeople(peopleWithTraits);
+    return app(people);
+  }
 }
 
 
@@ -206,9 +205,13 @@ function searchByHeight(people,traitsToSearch){
 
 // alerts a list of people
 function displayPeople(people) {
-  alert(people.map(function (person) {
+  if(people[0] == null){
+    alert (`There was something wrong with your search\nPlease try again`);
+  } else { 
+    alert(people.map(function (person) {
     return person.firstName + " " + person.lastName;
   }).join("\n"));
+}
 }
 
 function displayPerson(person) {
