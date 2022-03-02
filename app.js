@@ -96,7 +96,6 @@ function familyFinder(person, people){
 }
 function descendantFinder(person, people,fullList=[]){
   let descendants = people.filter(offspring => offspring.parents.includes(person[0].id))
-  //.replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',')
   for (let i = 0; i < descendants.length; i++){
     fullList.push(descendants[i])
    descendantFinder([descendants[i]], people,fullList)
@@ -108,7 +107,11 @@ function descendantFinder(person, people,fullList=[]){
 
 function descendantFormat (list) {
   list = JSON.stringify(list,['firstName','lastName'],1).replace(/},/g,'.NEWLINE.').replace(/({|}|\[|\]|")/g, '').replace(/(firstName: |lastName: )/g,'').replace(/,|\n |\n/g, '').replace(/\.NEWLINE\./g,',');
-  return list
+  if (!list){
+    return ('N/A')
+  } else {
+    return list
+  }
 }
 
 
@@ -134,9 +137,7 @@ function searchByName(people) {
 
 
 function searchByTrait(people){
-  let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSeparate queries by AND or a Comma (,)\nExample: gender:male,eye color:blue AND occupation:nurse`,customValidation)
-  // traitsToSearch = traitsToSearch.split(/(AND|,)/g)
-  // let newReg = /( AND |\,| , |, | ,|AND | AND)/g
+  let traitsToSearch = promptFor(`Please enter the traits you would like to search for followed by a colon.\nSearchable traits: gender, occupation, eyecolor, weight, and height\nSeparate queries by AND or a Comma (,)\nExample:\ngender:male,eyecolor:blue\ngender:male AND occupation:nurse`,customValidation)
   traitsToSearch = traitsToSearch.split(/ AND | , |, | ,|,/g);
   let peopleWithTraits = people;
   let counter = 0;
